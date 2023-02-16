@@ -1,9 +1,9 @@
-import './App.css';
+import TodoBoard from "./TodoBoard";
 
 function App() {
   return (
-    <h1>Heading</h1>
-  );
+      <TodoBoard/>
+  )
 }
 
 export default App;
