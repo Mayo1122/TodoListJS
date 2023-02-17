@@ -1,10 +1,7 @@
-import {useState} from "react";
 
-export default function AddTodo({handleAddTask}) {
-    const [item, setItem] = useState({title:"", completed:false});
+const AddTodo = ({item, setItem, handleAddTask}) => {
 
     const handleTaskChange = (e)=> {
-        console.log(e);
         setItem(
             {
                 ...item,
@@ -29,3 +26,5 @@ export default function AddTodo({handleAddTask}) {
         </>
     )
 }
+
+export default AddTodo

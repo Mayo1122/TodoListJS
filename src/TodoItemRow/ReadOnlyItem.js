@@ -1,5 +1,5 @@
 
-export default function ReadOnlyItem({ item, handleMarkCompleted }) {
+const ReadOnlyItem = ({ item, handleMarkCompleted })=> {
     return (
         <>
             <tr>
@@ -10,3 +10,5 @@ export default function ReadOnlyItem({ item, handleMarkCompleted }) {
         </>
     )
 }
+
+export default ReadOnlyItem
