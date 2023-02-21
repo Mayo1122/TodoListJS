@@ -1,4 +1,8 @@
-function AddTodo({ item, setItem, handleAddTask }) {
+import { useContext } from 'react';
+import { AddTodoContext } from '../contexts/contexts';
+
+function AddTodo({ item, setItem }) {
+  const handleAddTask = useContext(AddTodoContext);
   const handleTaskChange = (e) => {
     setItem(
       {

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ReadOnlyItem from '../TodoItemRow/ReadOnlyItem';
 import AddTodo from '../AddTodo/AddTodo';
 import { getTodoList, postTodoItem, updateTodoItem } from '../utils/services/TodoCrud';
 import { TODO_EMPTY_ITEM } from '../utils/constants';
+import { MarkCompletedContext, AddTodoContext } from '../contexts/contexts';
 
 function TodoBoard() {
   const [todoItems, setTodoItems] = useState([]);
@@ -22,32 +23,37 @@ function TodoBoard() {
     fetchTodosList();
   }, []);
 
-  const handleMarkCompleted = (currItem) => {
+  const handleMarkCompleted = useCallback((currItem) => {
     updateTodoItem({ ...currItem, completed: true })
       .then(() => {
       })
       .catch(() => {
 
       });
-  };
+  }, []);
 
   // eslint-disable-next-line max-len
-  const uiRows = todoItems.map((todo) => <ReadOnlyItem key={todo.id} item={todo} handleMarkCompleted={handleMarkCompleted} />);
+  const uiRows = todoItems.map((todo) => <ReadOnlyItem key={todo.id} item={todo} />);
 
-  const handleAddTask = (newTask) => {
-    postTodoItem(newTask).then((data) => {
-      setTodoItems([...todoItems, data]);
-      setItem(TODO_EMPTY_ITEM);
-    }).catch(() => {
-      alert('unable to add todo, try again');
-    });
-  };
+  const handleAddTask = useCallback(
+    (newTask) => {
+      postTodoItem(newTask).then((data) => {
+        setTodoItems([...todoItems, data]);
+        setItem(TODO_EMPTY_ITEM);
+      }).catch(() => {
+        alert('unable to add todo, try again');
+      });
+    },
+    [todoItems],
+  );
 
   return (
     <>
       <h1> TODO App</h1>
       <p> Add, update, see your daily todos</p>
-      <AddTodo item={item} setItem={setItem} handleAddTask={handleAddTask} />
+      <AddTodoContext.Provider value={handleAddTask}>
+        <AddTodo item={item} setItem={setItem} />
+      </AddTodoContext.Provider>
       <table>
         <thead>
           <tr>
@@ -57,7 +63,9 @@ function TodoBoard() {
           </tr>
         </thead>
         <tbody>
-          {uiRows}
+          <MarkCompletedContext.Provider value={handleMarkCompleted}>
+            {uiRows}
+          </MarkCompletedContext.Provider>
         </tbody>
       </table>
     </>
