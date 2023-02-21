@@ -1,4 +1,8 @@
-function ReadOnlyItem({ item, handleMarkCompleted }) {
+import { useContext } from 'react';
+import { MarkCompletedContext } from '../contexts/contexts';
+
+function ReadOnlyItem({ item }) {
+  const handleMarkCompleted = useContext(MarkCompletedContext);
   return (
     <tr>
       <td>{item.title}</td>
